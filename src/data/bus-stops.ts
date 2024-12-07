@@ -19,6 +19,24 @@ const busStopsDetails: LocationBasicDetailsType[] = [
         to: "wema-bank",
         distance: 100,
         description: "Continue to Wema Bank"
+      },
+      {
+        name: "Campus Road",
+        to: "sports-center-junction",
+        distance: 250,
+        description: "Continue to Sports Center Junction"
+      },
+      {
+        name: "Campus Road",
+        to: "faculty-of-environmental-science",
+        distance: 200,
+        description: "Continue to Faculty of Environmental Science"
+      },
+      {
+        name: "Campus Road",
+        to: "main-gate",
+        distance: 300,
+        description: "Continue to Main Gate"
       }
     ]
   },
@@ -33,6 +51,30 @@ const busStopsDetails: LocationBasicDetailsType[] = [
         to: "sports-center-junction",
         distance: 50,
         description: "Continue to Sports Center Junction"
+      },
+      {
+        name: "Campus Road",
+        to: "cits-bus-stop",
+        distance: 100,
+        description: "Continue to CITS Bus Stop"
+      },
+      {
+        name: "Campus Road",
+        to: "gtbank",
+        distance: 100,
+        description: "Continue to GT Bank"
+      },
+      {
+        name: "Campus Road",
+        to: "faculty-of-arts",
+        distance: 200,
+        description: "Continue to Faculty of Arts"
+      },
+      {
+        name: "Campus Road",
+        to: "tennis-court",
+        distance: 50,
+        description: "Continue to Tennis Court"
       }
     ]
   },
@@ -47,6 +89,24 @@ const busStopsDetails: LocationBasicDetailsType[] = [
         to: "new-hall-junction",
         distance: 50,
         description: "Continue to New Hall Junction"
+      },
+      {
+        name: "Campus Road",
+        to: "cits-bus-stop",
+        distance: 100,
+        description: "Continue to CITS Bus Stop"
+      },
+      {
+        name: "Campus Road",
+        to: "new-hall",
+        distance: 50,
+        description: "Continue to New Hall"
+      },
+      {
+        name: "Campus Road",
+        to: "zenith-bank",
+        distance: 250,
+        description: "Continue to Zenith Bank"
       }
     ]
   },
@@ -61,6 +121,30 @@ const busStopsDetails: LocationBasicDetailsType[] = [
         to: "cits-junction",
         distance: 50,
         description: "Continue to CITS Junction"
+      },
+      {
+        name: "Campus Road",
+        to: "ecobank-junction",
+        distance: 100,
+        description: "Continue to Ecobank Junction"
+      },
+      {
+        name: "Campus Road",
+        to: "new-hall-bus-stop",
+        distance: 50,
+        description: "Continue to New Hall Bus Stop"
+      },
+      {
+        name: "Campus Road",
+        to: "sports-center-bus-stop",
+        distance: 100,
+        description: "Continue to Sports Center Bus Stop"
+      },
+      {
+        name: "Campus Road",
+        to: "zenith-bank",
+        distance: 250,
+        description: "Continue to Zenith Bank"
       }
     ]
   }

@@ -1,13 +1,5 @@
 import { locations } from '../data/locations';
-import { ILocation, RouteDetails, TravelTimes, RouteSegment } from '../types';
-
-interface Distance {
-  [key: string]: number;
-}
-
-interface Previous {
-  [key: string]: string | null;
-}
+import { RouteDetails, TravelTimes, RouteSegment } from '../types';
 
 interface QueueItem {
   id: string;
@@ -59,7 +51,7 @@ export function findPathWithDirections(startId: string, endId: string): RouteDet
     // Check all connections
     for (const connection of current.connections) {
       const newDistance = distances[currentId] + connection.distance;
-      
+
       if (newDistance < distances[connection.to]) {
         distances[connection.to] = newDistance;
         previous[connection.to] = currentId;
@@ -85,7 +77,7 @@ export function findPathWithDirections(startId: string, endId: string): RouteDet
   // Reconstruct path
   while (current) {
     path.unshift(current);
-    current = previous[current] || null;
+    current = previous[current] as string;
   }
 
   // Create segments and directions
@@ -108,7 +100,7 @@ export function findPathWithDirections(startId: string, endId: string): RouteDet
 
     if (fromLoc && toLoc) {
       const connection = fromLoc.connections.find(conn => conn.to === toLoc.id);
-      
+
       if (connection) {
         // Always add segment for continuous path
         segments.push({
@@ -147,6 +139,7 @@ export function calculateTravelTime(distance: number): TravelTimes {
   return {
     walking: Math.round(distance / walkingSpeed),
     running: Math.round(distance / runningSpeed),
-    cycling: Math.round(distance / cyclingSpeed)
+    cycling: Math.round(distance / cyclingSpeed),
+    driving: Math.round(distance / 400)
   };
 }

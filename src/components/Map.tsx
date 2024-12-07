@@ -1,9 +1,10 @@
+'use client'
 import React, { useState, useEffect, useRef } from 'react';
 import { locations } from '../data/locations';
-import { findPathWithDirections, calculateTravelTime } from '../utils/pathfinder';
-import { RouteDetails, TravelTimes } from '../types';
+import { findPathWithDirections } from '../utils/pathfinder';
+import { RouteDetails, RouteSegment, TravelTimes } from '../types';
 
-const PADDING = 50; // Padding in pixels
+// const PADDING = 50;
 
 // Helper function to transform coordinates
 const transformCoordinates = (x: number, y: number) => ({
@@ -12,15 +13,15 @@ const transformCoordinates = (x: number, y: number) => ({
 });
 
 // Helper function to calculate walker rotation
-const getWalkerRotation = (segment?: any) => {
+const getWalkerRotation = (segment: RouteSegment) => {
   if (!segment) return 0;
-  
+
   const start = transformCoordinates(segment.from.coordinates.x, segment.from.coordinates.y);
   const end = transformCoordinates(segment.to.coordinates.x, segment.to.coordinates.y);
-  
+
   // Calculate angle in degrees
   const angle = Math.atan2(end.y - start.y, end.x - start.x) * 180 / Math.PI;
-  
+
   // Adjust angle for walker facing direction
   return angle - 90;
 };
@@ -30,22 +31,22 @@ export default function Map() {
   const [end, setEnd] = useState('');
   const [routeDetails, setRouteDetails] = useState<RouteDetails | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [travelTimes, setTravelTimes] = useState<TravelTimes | null>(null);
+  const [travelTimes] = useState<TravelTimes | null>(null);
   const [walkerPosition, setWalkerPosition] = useState({ x: 0, y: 0 });
   const [currentSegment, setCurrentSegment] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   // Add ref for the scrollable container
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number>(0);
 
   // Function to scroll to a point smoothly
   const scrollToPoint = (x: number, y: number) => {
     if (!scrollContainerRef.current) return;
-    
+
     const container = scrollContainerRef.current;
     const containerRect = container.getBoundingClientRect();
-    
+
     container.scrollTo({
       left: Math.max(0, x - containerRect.width / 2),
       top: Math.max(0, 1500 - y - containerRect.height / 2),
@@ -73,7 +74,7 @@ export default function Map() {
   useEffect(() => {
     const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     setIsDarkMode(darkModeMediaQuery.matches);
-    
+
     const handler = (e: MediaQueryListEvent) => setIsDarkMode(e.matches);
     darkModeMediaQuery.addEventListener('change', handler);
     return () => darkModeMediaQuery.removeEventListener('change', handler);
@@ -92,26 +93,26 @@ export default function Map() {
 
     const startPos = transformCoordinates(segment.from.coordinates.x, segment.from.coordinates.y);
     const endPos = transformCoordinates(segment.to.coordinates.x, segment.to.coordinates.y);
-    
+
     // Animation duration based on distance
     const duration = segment.connection.distance * 15; // Slower animation for better visibility
     const startTime = Date.now();
-    
+
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
+
       // Calculate current position using linear interpolation
       const x = startPos.x + (endPos.x - startPos.x) * progress;
       const y = startPos.y + (endPos.y - startPos.y) * progress;
-      
+
       setWalkerPosition({ x, y });
-      
+
       // Scroll to keep walker in view
       if (progress < 0.95) {
         scrollToPoint(x, y);
       }
-      
+
       if (progress < 1) {
         animationRef.current = requestAnimationFrame(animate);
       } else {
@@ -126,9 +127,9 @@ export default function Map() {
         }, 100);
       }
     };
-    
+
     animationRef.current = requestAnimationFrame(animate);
-    
+
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
@@ -199,16 +200,16 @@ export default function Map() {
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Map Container */}
           <div className="lg:w-2/3">
-            <div 
+            <div
               className="relative border-2 rounded-xl bg-white dark:bg-gray-800 dark:border-gray-700"
-              style={{ 
-                width: '800px', 
+              style={{
+                width: '800px',
                 height: '600px',
                 overflow: 'hidden'
               }}
             >
               {/* Scrollable Map Area */}
-              <div 
+              <div
                 ref={scrollContainerRef}
                 className="absolute inset-0 overflow-auto scroll-smooth"
                 style={{
@@ -218,7 +219,7 @@ export default function Map() {
                 }}
               >
                 {/* Map Content Area */}
-                <div 
+                <div
                   className="relative"
                   style={{
                     width: '2000px',
@@ -228,9 +229,9 @@ export default function Map() {
                 >
                   {/* Path lines */}
                   {routeDetails && (
-                    <svg 
-                      className="absolute inset-0 pointer-events-none" 
-                      style={{ 
+                    <svg
+                      className="absolute inset-0 pointer-events-none"
+                      style={{
                         width: '100%',
                         height: '100%'
                       }}
@@ -238,14 +239,14 @@ export default function Map() {
                       {routeDetails.segments.map((segment, index) => {
                         const start = transformCoordinates(segment.from.coordinates.x, segment.from.coordinates.y);
                         const end = transformCoordinates(segment.to.coordinates.x, segment.to.coordinates.y);
-                        
+
                         // Calculate midpoint for road name
                         const midX = (start.x + end.x) / 2;
                         const midY = (start.y + end.y) / 2;
-                        
+
                         // Calculate angle for road name
                         const angle = Math.atan2(end.y - start.y, end.x - start.x) * 180 / Math.PI;
-                        
+
                         return (
                           <g key={index}>
                             <line
@@ -312,7 +313,7 @@ export default function Map() {
                         transition: 'transform 0.3s ease-out'
                       }}
                     >
-                      <div style={{ transform: `rotate(${getWalkerRotation(routeDetails?.segments[currentSegment])}deg)` }}>
+                      <div style={{ transform: `rotate(${getWalkerRotation(routeDetails?.segments[currentSegment] as RouteSegment)}deg)` }}>
                         🚶
                       </div>
                     </div>
@@ -331,11 +332,10 @@ export default function Map() {
                     {routeDetails.directions.map((direction, index) => (
                       <li
                         key={index}
-                        className={`p-2 rounded ${
-                          index === currentSegment
-                            ? 'bg-blue-100 dark:bg-blue-900/30'
-                            : 'dark:text-gray-300'
-                        }`}
+                        className={`p-2 rounded ${index === currentSegment
+                          ? 'bg-blue-100 dark:bg-blue-900/30'
+                          : 'dark:text-gray-300'
+                          }`}
                       >
                         {index + 1}. {direction}
                       </li>

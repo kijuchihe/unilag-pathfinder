@@ -19,6 +19,12 @@ const junctionsDetails: LocationBasicDetailsType[] = [
         distance: 100,
         description: "Go straight towards Education Bus Stop",
         name: "Campus Road"
+      },
+      {
+        to: "wema-bank",
+        distance: 150,
+        description: "Continue to Wema Bank",
+        name: "Campus Road"
       }
     ]
   },
@@ -43,21 +49,28 @@ const junctionsDetails: LocationBasicDetailsType[] = [
       {
         to: "sports-center-bus-stop",
         distance: 50,
-        description: "Turn to Sports Center",
+        description: "Turn to Sports Center Bus Stop",
         name: "Campus Road"
       },
       {
-        to: 'new-hall-junction',
+        to: "new-hall-junction",
         distance: 400,
-        description: 'Continue to New Hall Junction',
+        description: "Continue to New Hall Junction",
+        name: "Campus Road"
+      },
+      {
+        to: "cits-bus-stop",
+        distance: 100,
+        description: "Continue to CITS Bus Stop",
         name: "Campus Road"
       }
     ]
-  }, {
+  },
+  {
     name: "New Hall Junction",
     commonName: "New Hall",
     icon: "T",
-    coordinates: { x: 200, y: 950 },
+    coordinates: { x: 200, y: 1050 },
     connections: [
       {
         to: "main-gate",
@@ -68,12 +81,64 @@ const junctionsDetails: LocationBasicDetailsType[] = [
       {
         to: "new-hall-bus-stop",
         distance: 50,
-        description: "Turn to New Hall",
+        description: "Turn to New Hall Bus Stop",
+        name: "Campus Road"
+      },
+      {
+        to: "cits-bus-stop",
+        distance: 100,
+        description: "Continue to CITS Bus Stop",
+        name: "Campus Road"
+      },
+      {
+        to: "ecobank-junction",
+        distance: 100,
+        description: "Continue to Ecobank Junction",
+        name: "Campus Road"
+      }
+    ]
+  },
+  {
+    name: "Ecobank Junction",
+    commonName: "Ecobank",
+    icon: "T",
+    coordinates: { x: 250, y: 1150 },
+    connections: [
+      {
+        to: "cits-bus-stop",
+        distance: 100,
+        description: "Continue to CITS Bus Stop",
+        name: "Campus Road"
+      },
+      {
+        to: "new-hall-junction",
+        distance: 100,
+        description: "Continue to New Hall Junction",
+        name: "Campus Road"
+      }
+    ]
+  },
+  {
+    name: "CITS Junction",
+    commonName: "CITS",
+    icon: "T", 
+    coordinates: { x: 200, y: 650 },
+    connections: [
+      {
+        to: "cits-bus-stop",
+        distance: 50,
+        description: "Continue to CITS Bus Stop",
+        name: "Campus Road"
+      },
+      {
+        to: "sports-center-junction",
+        distance: 100,
+        description: "Continue to Sports Center Junction",
         name: "Campus Road"
       }
     ]
   }
-]
+];
 
 export const junctions = generateLocations({
   locations: junctionsDetails,
